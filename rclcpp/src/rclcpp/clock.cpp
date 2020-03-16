@@ -160,7 +160,9 @@ Clock::create_jump_callback(
       std::lock_guard<std::mutex> clock_guard(shared_impl->clock_mutex_);
       rcl_ret_t ret = rcl_clock_remove_jump_callback(&shared_impl->rcl_clock_,
           Clock::on_time_jump, handler);
-      if (RCL_RET_OK != ret) {
+      // TODO(brawner) This cppcheck is a false positive, remove when addressed upstream
+      // https://trac.cppcheck.net/ticket/9537
+      if (RCL_RET_OK != ret) {  // cppcheck-suppress syntaxError
         RCUTILS_LOG_ERROR("Failed to remove time jump callback");
       }
     }
